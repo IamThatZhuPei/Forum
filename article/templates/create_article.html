@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+    <ol class="breadcrumb">
+        <li><a href="/">首页</a></li>
+        <li><a href="/article/list/{{ b.id }}">{{ b.name }}</a></li>
+        <li class="active">发表文章</li>
+    </ol>
+
+    <form class="form-horizontal" action="/article/create/{{ b.id }}" method="post">{% csrf_token %}
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">标题</label>
+            <div class="col-sm-8">
+                <input type="text" name="title" class="form-control" placeholder="标题" value="{{ title }}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2 control-label">内容</label>
+            <div class="col-sm-8">
+                <textarea name="content" class="form-control" rows="3">{{ content }}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary"> 发  表 </button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

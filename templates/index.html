@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+	<div class="col-xs-12 col-md-10">
+		<!--div class="panel panel-info">
+			<div class="panel-heading">
+				<a href="#" style="font_site: 16px;">运维专区</a>
+				<span class="pull-right">zhupei</span>
+			</div>
+			<div class="panel-body">
+				Panel content
+			</div>
+		</div>
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<a href="#" style="font_site: 16px;">运维专区</a>
+				<span class="pull-right">zhupei</span>
+			</div>
+			<div class="panel-body">
+				Panel content
+			</div>
+		</div>
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<a href="#" style="font_site: 16px;">运维专区</a>
+				<span class="pull-right">zhupei</span>
+			</div>
+			<div class="panel-body">
+				Panel content
+			</div>
+		</div-->
+		{% for b in blocks %}
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<a href="/article/list/{{ b.id }}" style="font-size: 16px;">{{b.name}}</a>
+				<span class="pull-right">{{b.manager_name}}</span>
+			</div>
+			<div class="panel-body">
+				{{ b.desc }}
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+	<div class="col-xs-12 col-md-2">
+		<div class="well well-lg">部落建设</div>
+	</div>
+{% endblock %}

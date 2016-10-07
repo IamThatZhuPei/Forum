@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+    <ol class="breadcrumb">
+        <li><a href="/">首页</a></li>
+        <li class="active">{{ b.name }}</li>
+    </ol>
+
+    <a href="/article/create/{{ b.id }}" class="btn btn-primary">创建文章</a>
+    <br>
+    <br>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>标题</th>
+                <th>作者</th>
+                <th>创建时间</th>
+                <th>最后更新时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for article in articles %}
+            <tr>
+                <td>{{ article.title }}</td>
+                <td>{{ article.content }}</td>
+                <td>{{ article.create_timestamp|date:'Y-m-d H:i' }}</td>
+                <td>{{ article.last_update_timestamp|date:'Y-m-d H:i' }}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+        <tfoot>
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                <li>
+                  <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li>
+                  <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+        </tfoot>
+
+
+    </table>
+{% endblock %}
