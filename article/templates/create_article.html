@@ -12,16 +12,25 @@
         <div class="alert alert-danger" role="alert">{{ error }}</div>
         {% endif %}
 
+        {% for field in form %}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger" role="alert">{{ field.label }}: {{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+
+
         <div class="form-group">
             <label class="col-sm-2 control-label">标题</label>
             <div class="col-sm-8">
-                <input type="text" name="title" class="form-control" placeholder="标题" value="{{ title }}">
+                <input type="text" name="title" class="form-control" placeholder="标题" value="{{ form.title.value }}">
             </div>
         </div>
         <div class="form-group">
             <label for="inputPassword3" class="col-sm-2 control-label">内容</label>
             <div class="col-sm-8">
-                <textarea name="content" class="form-control" rows="3">{{ content }}</textarea>
+                <textarea name="content" class="form-control" rows="3">{{ form.content.value }}</textarea>
             </div>
         </div>
         <div class="form-group">
