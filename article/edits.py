@@ -38,6 +38,7 @@ from django.views.generic import View, DetailView
 #         else:
 #             return render(request, "create_article.html", {"b": block, "form": form})
 
+
 class ArticleCreateView(View):
 
     template_name = "create_article.html"
@@ -52,15 +53,20 @@ class ArticleCreateView(View):
 
     def post(self, request, block_id):
         self.init_data(block_id)
-        form = ArticleForm(request.POST)
-        if form.is_valid():
-            article = form.save(commit=False)
-            article.block = self.block
-            article.status = 0
-            article.save()
-            return redirect("/article/list/%s" % block_id)
+        if request.user.is_authenticated():
+            form = ArticleForm(request.POST)
+            user = request.user
+            if form.is_valid():
+                article = form.save(commit=False)
+                article.owner = user
+                article.block = self.block
+                article.status = 0
+                article.save()
+                return redirect("/article/list/%s" % block_id)
+            else:
+                return render(request, self.template_name, {"b": self.block, "form": form})
         else:
-            return render(request, self.template_name, {"b": self.block, "form": form})
+            return redirect("/accounts/login")
 
 
 class ArticleDetailView(DetailView):

@@ -22,5 +22,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index),
     url(r'^article/', include('article.urls')),
+    url(r'^user/', include('usermodulo.urls')),
+    url(r'^accounts/', include('django.contrib.auth.urls')),
+    # url(r'^comment/create/', comment.)
+
     # url(r'^static/(?P<path>.*)$', django.contrib.staticfiles.views.serve), #django 内置静态文件处理
 ]

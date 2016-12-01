@@ -1,11 +1,13 @@
 # coding: utf-8
 from django.db import models
 from block.models import Block
+from django.contrib.auth.models import User
 
 __author__ = '朱沛'
 
 
 class Article(models.Model):
+    owner = models.ForeignKey(User, verbose_name="作者")
     block = models.ForeignKey(Block, verbose_name="板块ID")
     title = models.CharField("文章标题", max_length=100)
     content = models.CharField("文章内容", max_length=10000)
