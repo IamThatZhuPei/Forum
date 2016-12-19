@@ -1,5 +1,36 @@
 {% extends "base.html" %}
 {% block content %}
+
+    <script type="text/javascript" src="/static/js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.csrf.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var article_id = {{ a.id }};
+            var page_cnt = {{ pagination_data.page_cnt }};
+            var to_comment_id = 0;
+
+            $("#commentBtn").click(function () {
+                var comment = $("#commentContent").val();
+                var param = {"article_id": article_id, "content": comment, "to_comment_id": to_comment_id};
+                $.post("/comment/create/", param, function (data) {
+                    var ret = JSON.parse(data);
+                    if(ret["status"] == "ok"){
+                        $("#commentContent").val("")
+                        window.location.href = "/article/detail/{{ a.id }}?page_no=" + page_cnt+1;
+                    } else {
+                        alert(ret["msg"]);
+                    }
+                });
+            });
+
+            $(".replyBtn").click(function (e) {
+                to_comment_id = parseInt($(e.target).attr("data-id"));
+                $("#commentContent").focus();
+                return false;
+            });
+        });
+    </script>
+
     <ol class="breadcrumb">
         <li><a href="/">首页</a></li>
         <li><a href="/article/list/{{ a.block.id }}">{{ a.block.name }}</a></li>
@@ -9,11 +40,48 @@
     <table class="table">
         <tr>
             <td>作者: {{ a.owner }}</td>
-            <td>
+            <td class="width: 80%; font-size: 16px;">
                 <h3>{{ a.title }}</h3>
-                <span>{{ a.content }}</span>
+                {% autoescape off %}
+                    <span>{{ a.content }}</span>
+                {% endautoescape %}
             </td>
         </tr>
+        {% for comment in comments %}
+        <tr>
+            <td>作者: {{ comment.owner }}</td>
+            <td>
+                {% if comment.to_comment %}
+                    <blockquote>
+                        <b>{{ comment.to_comment.owner.username }}</b>
+                        <br />
+                        {{ comment.to_comment.content|linebreaksbr }}
+                    </blockquote>
+                {% endif %}
+                {{ comment.content|linebreaksbr }}
+                <a class="replyBtn btn btn-primary pull-right" data-id="{{ comment.id }}" href="#replyRegion">回复</a>
+            </td>
+        </tr>
+        {% endfor %}
+
+
+
+        <div id="replyRegion">
+            <tr>
+                <td>作者:
+                    {% if user.is_authenticated %}
+                        <p>{{ user.username }}</p>
+                    {% else %}
+                        <p>请<a href="/accounts/login">登陆</a></p>
+                    {% endif %}
+                </td>
+                <td class="width: 80%; font-size: 16px;">
+                    <textarea id="commentContent" class="form-control" rows="3"></textarea>
+                    <button id="commentBtn" class="btn btn-primary"> 发表评论 </button>
+                </td>
+            </tr>
+        </div>
     </table>
+{% include "page_navigation.html" %}
 
 {% endblock %}

@@ -1,5 +1,5 @@
 # coding: utf-8
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import UserForm
@@ -8,6 +8,7 @@ import datetime
 from django.utils import timezone
 from .aboutMail import send_activate_email
 from .models import ActivateCode
+import os
 
 
 def user_register(request):
@@ -64,3 +65,23 @@ def activate(request, code):
         return render(request, "register_back.html")
 
 
+def upload_avatar(request):
+    if request.method == 'GET':
+        return render(request, 'upload_avatar.html')
+    else:
+        profile = request.user.userprofile
+        avatar_file = request.FILES.get('avatar', None)
+        file_path = os.path.join("d:/pic/", avatar_file.name)
+        # file_path = 'D:\\forum\\' + avatar_file
+        print("=============没有校验是否选择了文件！！！", avatar_file.size)
+        if avatar_file.size > 533000:
+            print("图片大于520kb！")
+        else:
+            print("正常执行")
+        with open(file_path, 'wb+') as destination:
+            for chunk in avatar_file.chunks():
+                destination.write(chunk)
+        url = "http://localhost/%s" % avatar_file.name
+        profile.avatar = url
+        profile.save()
+        return redirect("/")

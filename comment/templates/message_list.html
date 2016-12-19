@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    <ul class="list-group">
+        {% for msg in msgs %}
+            <li class="list-group-item">
+                <a href="/message/read/{{ msg.id }}">
+                    {% if msg.status == 0 %}
+                    <b>{{ msg.content }}</b>
+                    {% else %}
+                    {{ msg.content }}
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

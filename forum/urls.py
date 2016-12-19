@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from comment.view import create_comment
 
 import views
 
@@ -24,7 +25,9 @@ urlpatterns = [
     url(r'^article/', include('article.urls')),
     url(r'^user/', include('usermodulo.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls')),
-    # url(r'^comment/create/', comment.)
+    url(r'^comment/create/', create_comment),
+    url(r'^message/', include('comment.urls')),
+    url(r'^ueditor/', include('DjangoUeditor.urls')),
 
     # url(r'^static/(?P<path>.*)$', django.contrib.staticfiles.views.serve), #django 内置静态文件处理
 ]

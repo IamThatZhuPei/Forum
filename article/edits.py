@@ -4,6 +4,8 @@ from block.models import Block
 from .models import Article
 from .forms import ArticleForm
 from django.views.generic import View, DetailView
+from comment.models import Comment
+from utilFunc import paginate_queryset
 
 
 # __author__ = '朱沛'
@@ -73,3 +75,18 @@ class ArticleDetailView(DetailView):
     model = Article
     template_name = 'article_detail.html'
     context_object_name = 'a'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        page_no = int(self.request.GET.get("page_no", "1"))
+        all_comments = Comment.objects.filter(article=context["a"], status=0)
+
+        comments, pagination_data = paginate_queryset(all_comments, page_no, cnt_per_page=3)
+
+        context['comments'] = comments
+        context['pagination_data'] = pagination_data
+
+        return context
+
+
+

@@ -1,4 +1,6 @@
 from django.core.paginator import Paginator
+import json
+from django.http.response import HttpResponse
 
 
 # 分页功能函数
@@ -23,3 +25,6 @@ def paginate_queryset(objs, page_no, cnt_per_page = 10, half_show_length=5):
     return (page.object_list, pagination_data)
 
 
+def json_response(obj):
+    txt = json.dumps(obj)
+    return HttpResponse(txt)

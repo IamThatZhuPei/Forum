@@ -35,5 +35,6 @@ def article_list(request, block_id):
 
     page_articles, pagination_data = paginate_queryset(all_article_objs, page_no)
 
-    return render(request, "article_list.html", {"articles": page_articles, "b": block, "page_elem": pagination_data})
+    return render(request, "article_list.html", {"articles": page_articles, "b": block,
+                                                 "pagination_data": pagination_data})
 
